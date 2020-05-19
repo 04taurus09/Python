@@ -38,5 +38,26 @@ def fetch_dl_members(dl):
     return members
 
 
+#getEmailIdFromUsername returns email of the given username
+def getEmailIdFromUsername(username):
+    outGAL = outlook.GetGlobalAddressList()
+    entries = outGAL.AddressEntries
+    user = entries.Item(username)
+    if (user.AddressEntryUserType == 0):
+        mailID = user.GetExchangeUser().PrimarySmtpAddress
+    elif (user.AddressEntryUserType == 1):
+        contacts = user.Members
+        if contacts[0].AddressEntryUserType == 0:
+            mailID = contacts[0].GetExchangeUser.PrimarySmtpAddress.lower()
+        else:
+            membersList = contacts
+            while membersList[0].AddressEntryUserType == 1:
+                for c in membersList:
+                    dl_members = c.Members
+                    membersList = dl_members
+            mailID = membersList[0].GetExchangeUser().PrimarySmtpAddress.lower()
+    return mailID
+
+
 
 
